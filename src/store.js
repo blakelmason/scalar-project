@@ -1,5 +1,5 @@
 import create from 'zustand'
 
-export default create((set) => ({
+export default create(() => ({
   moviesCount: 0,
 }))
