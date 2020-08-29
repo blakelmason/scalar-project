@@ -1,10 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import store from './store'
+
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Movies from './pages/Movies'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 function App() {
+  const getMovies = store((state) => state.getMovies)
+
+  useEffect(() => {
+    getMovies()
+  }, [getMovies])
+
   return (
     <Router>
       <Navbar />
