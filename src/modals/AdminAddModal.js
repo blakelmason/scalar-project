@@ -31,7 +31,7 @@ export default class AdminNewModal extends Component {
     return (
       <Modal show={show} onHide={handleClose} onEnter={this.setInitialValues}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Movie</Modal.Title>
+          <Modal.Title>Add Movie</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form id="adminAddForm" onSubmit={this.addMovie}>

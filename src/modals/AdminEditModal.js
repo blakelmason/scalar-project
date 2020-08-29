@@ -4,7 +4,7 @@ import axios from 'axios'
 import endpoint from '../functions/endpoint'
 import { Form } from 'react-bootstrap'
 
-export default class AdminEditMovie extends Component {
+export default class AdminEditModal extends Component {
   state = {
     title: '',
     year: '',

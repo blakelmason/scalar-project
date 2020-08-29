@@ -2,12 +2,21 @@ import React, { useState } from 'react'
 import store from '../store'
 import moment from 'moment'
 import './Admin.scss'
-import { Button } from 'react-bootstrap'
+import { Button, Table } from 'react-bootstrap'
 import { Portal } from 'react-portal'
-import AdminEditMovie from '../modals/AdminEditMovie'
-import AdminAddMovie from '../modals/AdminAddMovie'
+import AdminEditModal from '../modals/AdminEditModal'
+import AdminAddModal from '../modals/AdminAddModal'
+import AdminInfoModal from '../modals/AdminInfoModal'
 import axios from 'axios'
 import endpoint from '../functions/endpoint'
+import styled from 'styled-components'
+
+const Span = styled.span`
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+`
 
 export default function Admin() {
   const setMovies = store((state) => state.setMovies)
@@ -16,16 +25,17 @@ export default function Admin() {
   const [movie, setMovie] = useState({})
   const [editModal, setEditModal] = useState(false)
   const [addModal, setAddModal] = useState(false)
-
-  const handleEditClose = () => setEditModal(false)
-  const handleAddClose = () => setAddModal(false)
+  const [infoModal, setInfoModal] = useState(false)
 
   const handleEditShow = (movie) => {
     setMovie(movie)
     setEditModal(true)
   }
 
-  const handleAddShow = () => setAddModal(true)
+  const handleInfoShow = (movie) => {
+    setMovie(movie)
+    setInfoModal(true)
+  }
 
   const reset = async () => {
     setMovies('')
@@ -39,7 +49,7 @@ export default function Admin() {
       {movies ? (
         <>
           <div className="table-responsive">
-            <table className="table border mb-4 admin-table">
+            <Table hover className="border mb-4 admin-table">
               <thead>
                 <tr>
                   <th>#</th>
@@ -52,7 +62,9 @@ export default function Admin() {
                 {movies.map((movie, i) => (
                   <tr key={`movie-row-${i}`}>
                     <th>{i + 1}</th>
-                    <td>{movie.title}</td>
+                    <td>
+                      <Span onClick={() => handleInfoShow(movie)}>{movie.title}</Span>
+                    </td>
                     <td>{moment(movie.released_on).format('MMM D, YYYY')}</td>
                     <td>
                       <Button className="p-1" style={{ lineHeight: 0 }} onClick={() => handleEditShow(movie)}>
@@ -75,11 +87,11 @@ export default function Admin() {
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </Table>
           </div>
           <div className="d-flex">
             <Button onClick={reset}>Reset</Button>
-            <Button onClick={handleAddShow} className="ml-auto d-flex align-items-center">
+            <Button onClick={() => setAddModal(true)} className="ml-auto d-flex align-items-center">
               <svg
                 width="1em"
                 height="1em"
@@ -104,14 +116,21 @@ export default function Admin() {
         <div>Getting movies. . .</div>
       )}
       <Portal>
-        <AdminEditMovie
+        <AdminEditModal
           show={editModal}
-          handleClose={handleEditClose}
+          handleClose={() => setEditModal(false)}
           movie={movie}
           getMovies={getMovies}
           setMovies={setMovies}
         />
-        <AdminAddMovie show={addModal} handleClose={handleAddClose} movie={movie} getMovies={getMovies} setMovies={setMovies} />
+        <AdminAddModal
+          show={addModal}
+          handleClose={() => setAddModal(false)}
+          movie={movie}
+          getMovies={getMovies}
+          setMovies={setMovies}
+        />
+        <AdminInfoModal show={infoModal} handleClose={() => setInfoModal(false)} movie={movie} />
       </Portal>
     </>
   )
