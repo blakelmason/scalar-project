@@ -1,18 +1,13 @@
 import create from 'zustand'
 import axios from 'axios'
-
-const endpoint = (functionName) => `/.netlify/functions/${functionName}`
+import endpoint from './functions/endpoint'
 
 const useStore = create((set, get) => ({
   movies: '',
+  setMovies: (movies) => set({ movies }),
   getMovies: async () => {
     const res = await axios.get(endpoint('movies'))
     set({ movies: res.data.sort(compareDates) })
-  },
-  sortMoviesByDate: (order) => {
-    const movies = get().movies.slice().sort(compareDates)
-    if (order === 'newest') set({ movies })
-    if (order === 'oldest') set({ movies: movies.reverse() })
   },
 }))
 

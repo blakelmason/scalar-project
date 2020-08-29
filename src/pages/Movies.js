@@ -77,7 +77,7 @@ export default function Movies() {
   if (!movies) return <div>Getting Movies. . .</div>
   return (
     <>
-      <div className="d-md-flex align-items-center mb-3">
+      <div className="d-md-flex align-items-center mb-4">
         <div className="d-flex align-items-center mb-3 mb-md-0">
           <p className="mb-0 mr-3" style={{ whiteSpace: 'nowrap' }}>
             Sort by date:

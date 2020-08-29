@@ -1,12 +1,13 @@
 const mongoose = require('mongoose')
+const models = require('../../models')
 
 let conn = null
 
 const { DB_STRING } = process.env
 
-exports.handler = async (event, context, callback) => {
+exports.handler = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false
-  if (conn == null) {
+  if (conn === null) {
     conn = mongoose.createConnection(DB_STRING, {
       useUnifiedTopology: true,
       useNewUrlParser: true,
@@ -14,24 +15,43 @@ exports.handler = async (event, context, callback) => {
       bufferMaxEntries: 0,
     })
     await conn
-    conn.model(
-      'Movie',
-      new mongoose.Schema({
-        title: String,
-        year: Number,
-        rated: String,
-        released_on: String,
-        genre: String,
-        director: String,
-        plot: String,
-      })
-    )
+    conn.model('Movie', models.Movie)
   }
 
-  const Music = conn.model('Movie')
-  const doc = await Music.find()
-  return {
-    statusCode: 200,
-    body: JSON.stringify(doc),
+  const Movie = conn.model('Movie')
+
+  const { httpMethod } = event
+
+  if (httpMethod === 'GET') {
+    const doc = await Movie.find()
+    return {
+      statusCode: 200,
+      body: JSON.stringify(doc),
+    }
+  }
+
+  if (httpMethod === 'POST') {
+    const doc = new Movie(JSON.parse(event.body))
+    await doc.save()
+    return {
+      statusCode: 200,
+    }
+  }
+
+  if (httpMethod === 'PUT') {
+    const body = JSON.parse(event.body)
+    const doc = await Movie.findOne({ _id: body._id })
+    Object.assign(doc, body)
+    await doc.save()
+    return {
+      statusCode: 200,
+    }
+  }
+
+  if (httpMethod === 'DELETE') {
+    await Movie.deleteOne({ _id: event.queryStringParameters._id })
+    return {
+      statusCode: 200,
+    }
   }
 }
