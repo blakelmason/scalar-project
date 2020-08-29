@@ -5,6 +5,7 @@ import store from './store'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Movies from './pages/Movies'
+import Admin from './pages/Admin'
 
 function App() {
   const getMovies = store((state) => state.getMovies)
@@ -18,6 +19,9 @@ function App() {
       <Navbar />
       <div className="container">
         <Switch>
+          <Route path="/admin">
+            <Admin />
+          </Route>
           <Route path="/movies">
             <Movies />
           </Route>
