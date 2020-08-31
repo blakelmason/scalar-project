@@ -8,4 +8,5 @@ module.exports = new mongoose.Schema({
   genre: String,
   director: String,
   plot: String,
+  reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }],
 })
