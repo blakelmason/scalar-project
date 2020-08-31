@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import store from '../store'
-import Movie from '../components/Movie'
 import bp from '../css/breakpoints'
 import styled from 'styled-components'
 import { Form, Button } from 'react-bootstrap'
+import moment from 'moment'
+import { Link } from 'react-router-dom'
 
 const Grid = styled.div`
   display: grid;
@@ -127,5 +128,42 @@ export default function Movies() {
         </Grid>
       )}
     </>
+  )
+}
+
+function Movie({ title, rated, released_on, plot, _id }) {
+  return (
+    <div className="border rounded-lg shadow d-flex flex-column" style={{ overflow: 'hidden' }}>
+      <div className="d-flex align-items-start justify-content-between">
+        <h5 className="px-3 pt-3 mb-0">{title}</h5>
+        <h6 className=" mb-0 px-2 py-1 bg-light border-bottom border-left" style={{ whiteSpace: 'nowrap' }}>
+          {rated}
+        </h6>
+      </div>
+      <div className="p-3 d-flex flex-column flex-grow-1">
+        <p>{moment(released_on).format('MMM YYYY')}</p>
+        <p>{plot}</p>
+        <Link className="mt-auto" to={`/movie/${_id}`}>
+          Reviews/Details{' '}
+          <svg
+            width="1em"
+            height="1em"
+            viewBox="0 0 16 16"
+            className="bi bi-chevron-double-right"
+            fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fillRule="evenodd"
+              d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"
+            />
+            <path
+              fillRule="evenodd"
+              d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"
+            />
+          </svg>
+        </Link>
+      </div>
+    </div>
   )
 }

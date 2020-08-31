@@ -9,11 +9,13 @@ export default function AdminInfoModal({ show, handleClose, movie }) {
       </Modal.Header>
       <Modal.Body>
         <div style={{ disaply: 'grid', gap: '1rem' }}>
-          {Object.keys(movie).map((item, i) => (
-            <div key={`movie-info-row-${i}`}>
-              {item}: {movie[item]}
-            </div>
-          ))}
+          {Object.keys(movie)
+            .filter((item) => (item === 'reviews' ? false : true))
+            .map((item, i) => (
+              <div key={`movie-info-row-${i}`}>
+                {item}: {movie[item]}
+              </div>
+            ))}
         </div>
       </Modal.Body>
       <Modal.Footer>

@@ -39,8 +39,8 @@ export default function Admin() {
 
   const reset = async () => {
     setMovies('')
-    const { data } = await axios.get(endpoint('reset'))
-    setMovies(data)
+    await axios.get(endpoint('reset'))
+    getMovies()
   }
 
   return (

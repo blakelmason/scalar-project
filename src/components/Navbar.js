@@ -13,7 +13,7 @@ export default function CustomNavbar() {
             <LinkContainer exact to="/">
               <Nav.Link>Home</Nav.Link>
             </LinkContainer>
-            <LinkContainer to="/movies">
+            <LinkContainer exact to="/movies">
               <Nav.Link>Movies</Nav.Link>
             </LinkContainer>
           </Nav>
