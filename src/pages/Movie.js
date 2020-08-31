@@ -16,9 +16,10 @@ export default function Movie() {
   const hideModal = () => setModal(false)
 
   const saveReview = async (review) => {
+    hideModal()
+    setData('')
     review.movie = data._id
     await axios.post(endpoint('reviews'), review)
-    setData('')
     const res = await axios.get(endpoint('movies'), { params: { _id } })
     setData(res.data)
   }
